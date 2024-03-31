@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS "users" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(255),
+    "lastname" VARCHAR(255),
+    "email" VARCHAR(255) UNIQUE,
+    "username" VARCHAR(255) UNIQUE,
+    "password" VARCHAR(255),
+    "CreatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "UpdatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "enabled" BOOLEAN DEFAULT TRUE
+);

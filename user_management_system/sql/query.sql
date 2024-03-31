@@ -2,11 +2,11 @@
 SELECT * FROM users WHERE id = $1 LIMIT 1;
 
 -- name: ListUser :many
-SELECT * FROM users ORDER BY UserId;
+SELECT * FROM users ORDER BY id;
 
 -- name: CreateUser :one
 INSERT INTO users (
-    Name, LastName, Email, UserName, Password,  Enabled
+    name, lastname, email, username, password,  enabled
     ) VALUES (
         $1, $2, $3, $4, $5, $6
     )
@@ -14,5 +14,6 @@ RETURNING *;
 
 
 -- name: DeleteUser :exec
-DELETE FROM products
-WHERE UserId = $1;
+DELETE FROM users
+WHERE id = $1;
+
