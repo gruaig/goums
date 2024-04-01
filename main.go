@@ -7,15 +7,19 @@ import (
 )
 
 func main() {
-
 	connectionStr := "user=postgres password=password dbname=goums sslmode=disable"
 
-	manager, error := db.NewConnectionManager(connectionStr)
-
-	if err ! nil {
+	// Create a new connection manager
+	manager, err := sql.NewConnectionManager(connectionStr)
+	if err != nil {
 		log.Fatal(err)
 	}
 
+	defer manager.Close() // Close the connection when main() exits
 
+	err = manager.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }

@@ -1,8 +1,10 @@
-package handlers
+package sql
 
 import (
 	"database/sql"
 	"sync"
+
+	_ "github.com/lib/pq"
 )
 
 // Write a connection Manager to handle DB operations make it thread safe
@@ -27,4 +29,7 @@ func (cm *ConnectionManager) GetConnection() *sql.DB {
 
 func (cm *ConnectionManager) Close() error {
 	return cm.conn.Close()
+}
+func (cm *ConnectionManager) Ping() error {
+	return cm.conn.Ping()
 }
