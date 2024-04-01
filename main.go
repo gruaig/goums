@@ -3,9 +3,14 @@ package main
 import (
 	"database/sql"
 	"log"
+	"net/http"
 
 	_ "github.com/lib/pq"
 )
+
+func contentHandler(w http.ResponseWriter, r *http.Request) {
+
+}
 
 func main() {
 	connectionStr := "user=postgres password=password dbname=goums sslmode=disable"
@@ -33,5 +38,8 @@ func main() {
 	// for _, user := range getUsers {
 	// 	fmt.Println("User:", user.Name.String)
 	// }
+
+	http.HandleFunc("/users", contentHandler)
+	log.Fatal(http.ListenAndServe(":8000", nil))
 
 }
