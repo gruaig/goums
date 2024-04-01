@@ -1,8 +1,8 @@
--- name: GeUsers :one
+-- name: Getuser :one
 SELECT * FROM users WHERE id = $1 LIMIT 1;
 
 -- name: ListUser :many
-SELECT * FROM users ORDER BY id;
+SELECT * FROM users;
 
 -- name: CreateUser :one
 INSERT INTO users (
@@ -16,4 +16,7 @@ RETURNING *;
 -- name: DeleteUser :exec
 DELETE FROM users
 WHERE id = $1;
+
+-- name: GetAllUsers :many
+SELECT * from users;
 

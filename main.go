@@ -1,25 +1,37 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 
-	"github.com/gruaig/goums/sql"
+	_ "github.com/lib/pq"
 )
 
 func main() {
 	connectionStr := "user=postgres password=password dbname=goums sslmode=disable"
+	db, err := sql.Open("postgres", connectionStr)
 
-	// Create a new connection manager
-	manager, err := sql.NewConnectionManager(connectionStr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close() // Close the database connection when main function exits
+
+	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer manager.Close() // Close the connection when main() exits
+	// ctx := context.Background()
+	// queries := users.New(db)
 
-	err = manager.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// getUsers, err := queries.ListUser(ctx)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// // Iterate over the results
+	// for _, user := range getUsers {
+	// 	fmt.Println("User:", user.Name.String)
+	// }
 
 }

@@ -62,12 +62,49 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 	return err
 }
 
-const geUsers = `-- name: GeUsers :one
+const getAllUsers = `-- name: GetAllUsers :many
+SELECT id, name, lastname, email, username, password, "CreatedAt", "UpdatedAt", enabled from users
+`
+
+func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getAllUsers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []User
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Lastname,
+			&i.Email,
+			&i.Username,
+			&i.Password,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.Enabled,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getuser = `-- name: Getuser :one
 SELECT id, name, lastname, email, username, password, "CreatedAt", "UpdatedAt", enabled FROM users WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GeUsers(ctx context.Context, id int32) (User, error) {
-	row := q.db.QueryRowContext(ctx, geUsers, id)
+func (q *Queries) Getuser(ctx context.Context, id int32) (User, error) {
+	row := q.db.QueryRowContext(ctx, getuser, id)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -84,7 +121,7 @@ func (q *Queries) GeUsers(ctx context.Context, id int32) (User, error) {
 }
 
 const listUser = `-- name: ListUser :many
-SELECT id, name, lastname, email, username, password, "CreatedAt", "UpdatedAt", enabled FROM users ORDER BY id
+SELECT id, name, lastname, email, username, password, "CreatedAt", "UpdatedAt", enabled FROM users
 `
 
 func (q *Queries) ListUser(ctx context.Context) ([]User, error) {

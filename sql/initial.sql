@@ -2,7 +2,7 @@ CREATE DATABASE goums;
 
 
 CREATE TABLE "user" (
-    "UserId" SERIAL PRIMARY KEY,
+    "id" SERIAL PRIMARY KEY,
     "Name" VARCHAR(255),
     "LastName" VARCHAR(255),
     "Email" VARCHAR(255) UNIQUE,
